@@ -31,9 +31,9 @@ def get_response(user_input, chat_history, api_key):
     # Add previous chat history to memory if it's available
     for speaker, message in chat_history:
         if speaker == "You":
-            history.add_message("human", message)
+            history.add_message(message)
         elif speaker == "Assistant":
-            history.add_message("assistant", message)
+            history.add_message(message)
     
     # Create the chain with message history
     chain_with_message_history = RunnableWithMessageHistory(
