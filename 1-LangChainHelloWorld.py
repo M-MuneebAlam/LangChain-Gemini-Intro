@@ -35,9 +35,10 @@ prompt = ChatPromptTemplate.from_messages(
 chain = prompt | llm
 
 
-
+# Initialize the message history
 history = ChatMessageHistory()
 
+# Create the chain with message history
 chain_with_message_history = RunnableWithMessageHistory(
     chain,
     lambda session_id: history,
@@ -45,28 +46,26 @@ chain_with_message_history = RunnableWithMessageHistory(
     history_messages_key="chat_history",
 )
 
-response1 = chain_with_message_history.invoke(
-    {"input": "Who won the ICC world cup in 1992?"},
-    {"configurable": {"session_id": "unused"}},
-)
+# Chat loop
+print("Chat started. Type your message below. Type 'Exit' to end the chat.")
+session_id = "unused"  # You can customize session handling as needed
+while True:
+    user_input = input("You: ")
+    if user_input.strip().lower() == "exit":
+        print("Chat ended.")
+        break
 
-response2 = chain_with_message_history.invoke(
-    {"input": "Who was the captain of winning team?"},
-    {"configurable": {"session_id": "unused"}},
-)
+    # Get response from the chain
+    response = chain_with_message_history.invoke(
+        {"input": user_input},
+        {"configurable": {"session_id": session_id}},
+    )
 
-
-
-# Display the result
-print("First Response:", response1.content)
-print("\n\nSecond Response:", response2.content)
-
-
+    # Display the response
+    print(f"Assistant: {response.content}")
 
 # Access the chat history messages:
+print("\nChat History:")
 chat_history_messages = history.messages
-
-# Print the chat history messages:
 for message in chat_history_messages:
     print(f"{message.type}: {message.content}")
-
