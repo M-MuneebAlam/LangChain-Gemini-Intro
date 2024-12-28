@@ -1,3 +1,7 @@
+# WARNING:
+# There is an issue where the chat and history gets duplicated in the console after some time.
+
+
 # Import necessary modules
 from dotenv import load_dotenv
 import os
@@ -64,8 +68,12 @@ while True:
     # Display the response
     print(f"Assistant: {response.content}")
 
-# Access the chat history messages:
+
+
+# Print chat history in a cleaner format  
 print("\nChat History:")
-chat_history_messages = history.messages
-for message in chat_history_messages:
-    print(f"{message.type}: {message.content}")
+for message in history.messages:
+    if message.type == "human":
+        print(f"You: {message.content}")
+    elif message.type == "ai":
+        print(f"Assistant: {message.content}")
