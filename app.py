@@ -10,12 +10,13 @@ API_KEY = os.getenv("GOOGLE_API_KEY")
 # Set up Streamlit UI elements
 st.title("Chatbot with LangChain and Google Generative AI")
 
+# Initialize chat history in session state if it doesn't exist
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 # Text input for the user
 user_input = st.text_input("You:", "")
 
-# Display chat history
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
 
 # Process user input
 if user_input:
